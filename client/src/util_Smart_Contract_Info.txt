@@ -1,0 +1,1 @@
+address of BAT smart contract = 0xBda8eA9bD26F8B74DDD41EE8E5D25e8B8cF4EE90
