@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BAT_contract from "./contracts/BAT.json";
+import BAT_contract from "./contract-builds/BAT.json";
 import getWeb3 from "./utils/getWeb3";
 
 import "./App.css";
@@ -16,7 +16,8 @@ class App extends Component {
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       console.log(networkId);
-      const deployedNetwork = BAT_contract.networks["5777"];
+      const deployedNetwork = BAT_contract.networks[networkId];
+      console.log(deployedNetwork);
       const instance = new web3.eth.Contract(
           BAT_contract.abi, deployedNetwork.address
       );
