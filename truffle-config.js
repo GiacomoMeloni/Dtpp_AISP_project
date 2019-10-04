@@ -75,6 +75,11 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
 
+    ganache: {
+      host: "127.0.0.1",
+      port: 7545,
+      network_id: "*",
+    },
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
