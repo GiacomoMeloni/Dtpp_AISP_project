@@ -100,4 +100,29 @@ contract BAT is ERC721 {
         emit balanceUpdated (msg.sender, _id, _newBalance);
     }
 
+//    TO DO
+//    Function that returns the token list owned by a specified address
+//    function getAllTokenByOwnerAddress(address _owner) public returns (uint[]){
+//        uint[] listOfTokens;
+//        uint currentIndex = 0;
+//        for (uint i=1; i<lastTokenId; i++){
+//            if (ownerOf(i) == _owner){
+//                listOfTokens[currentIndex] == i;
+//                currentIndex++;
+//            }
+//        }
+//        return listOfTokens;
+//    }
+
+//  TO DO
+//  function getTheOverallBalance (address _owner) public returns (uint){
+//      int totalBalance;
+//      int[] tokens = getAllTokenByOwnerAddress(_owner);
+//      for (uint i=0; i<tokens.length; i++){
+//          totalBalance += accounts[tokens[i]].balance;
+//      }
+//      return totalBalance;
+//  }
+
+    
 }
