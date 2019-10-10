@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import BAT_contract from "./contract-builds/BAT.json";
-import getWeb3 from "./utils/getWeb3";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+// import BAT_contract from "./contract-builds/BAT.json";
+// import getWeb3 from "./utils/getWeb3";
+import {BrowserRouter as Router, Switch, Route, /*Link*/} from "react-router-dom";
 
 import "./App.css";
 import LoadBankAccount from "./Components/Load_Bank_Account";
