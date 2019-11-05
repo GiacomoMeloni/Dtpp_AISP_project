@@ -7,6 +7,7 @@ import "./App.css";
 import LoadBankAccount from "./Components/Load_Bank_Account";
 import About from "./Components/About";
 import Home from "./Components/Home";
+import QueryPage from "./Components/Query";
 
 class App extends Component {
     constructor(props){
@@ -16,7 +17,8 @@ class App extends Component {
             address: null,
             web3: null,
             accounts: null,
-            contract: null
+            contract: null,
+            value: 'deutsche_Bank'
         };
     }
 
@@ -75,7 +77,8 @@ class App extends Component {
             <Switch>
               <Route path="/" exact render={(props)=><Home {...props} state = {this.state}/>}/>
               <Route path="/about" exact component={About}/>
-              <Route path="/loadBankAccount" component={LoadBankAccount}/>
+              <Route path="/loadBankAccount" exact render={(props)=><LoadBankAccount {...props} state = {this.state}/>}/>
+              <Route path="/queryPage" render={(props)=><QueryPage {...props} state = {this.state}/>}/>
             </Switch>
             {/*<h1>Welcome to Distrubuted TPP AISP project</h1>*/}
             {/*<p>This prototype has the purpose to show the interaction with smart contracts and banks API</p>*/}

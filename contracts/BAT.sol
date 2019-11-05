@@ -16,6 +16,10 @@ contract BAT is ERC721 {
 
     mapping(uint256 => BankAccount) public accounts;
 
+    /*TO DO
+    * Add a function to know if an IBAN is from the current sender or it's owned by another
+    * account and the send the events*/
+
     modifier onlyIfIbanDidNotExist(string memory _iban, address _owner) {
         bool check = checkIbanAlreadyExist(_iban,_owner);
         require(

@@ -43,12 +43,12 @@ class Home extends React.Component {
         const { accounts, contract } = this.state;
         console.log(accounts);
         // Stores a given value, 5 by default.
-        // await contract.methods.createBankAccount("Hola",1).send({ from: accounts[0]});
-        // await contract.methods.SetBankAccountBalance(1,100).send({ from: accounts[0]});
+        await contract.methods.createBankAccount("Hola",1).send({ from: accounts[0]});
+        await contract.methods.SetBankAccountBalance(2,100).send({ from: accounts[0]});
 
         // Get the value from the contract to prove it worked.
-        const balance = await contract.methods.getAccountBalance(1).call();
-        const addressOfOwner = await contract.methods.ownerOf(1).call();
+        const balance = await contract.methods.getAccountBalance(2).call();
+        const addressOfOwner = await contract.methods.ownerOf(2).call();
         console.log(balance);
         console.log (await contract.methods.getBankAccount(1));
         // Update state with the result.
