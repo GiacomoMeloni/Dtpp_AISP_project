@@ -123,28 +123,32 @@ contract BAT is ERC721 {
         // }
         return 0;
     }
-//    TO DO
-//    Function that returns the token list owned by a specified address
-//    function getAllTokenByOwnerAddress(address _owner) public returns (uint[]){
-//        uint[] listOfTokens;
-//        uint currentIndex = 0;
-//        for (uint i=1; i<lastTokenId; i++){
-//            if (ownerOf(i) == _owner){
-//                listOfTokens[currentIndex] == i;
-//                currentIndex++;
-//            }
-//        }
-//        return listOfTokens;
-//    }
 
-//  TO DO
-//  function getTheOverallBalance (address _owner) public returns (uint){
-//      int totalBalance;
-//      int[] tokens = getAllTokenByOwnerAddress(_owner);
-//      for (uint i=0; i<tokens.length; i++){
-//          totalBalance += accounts[tokens[i]].balance;
-//      }
-//      return totalBalance;
-//  }
+    //    Function that returns the token list owned by a specified address
+    //    Due to solidity features the function returns max 10 bank accounts
+    //    at the moment is not possible return dynamic array
 
+    function getAllTokenByOwnerAddress(address _owner) public view returns (uint [] memory){
+        uint[] memory listOfTokens = new uint[](10);
+        uint currentIndex = 0;
+
+        for (uint i=1; i<=lastTokenId; i++){
+            if (ownerOf(i) == _owner){
+                listOfTokens[currentIndex] = i;
+                currentIndex++;
+            }
+        }
+        return listOfTokens;
+    }
+
+    //Function to return the overall token balance using the owner address
+
+    function getOverallBalance (address _owner) public view returns (int){
+        int totalBalance = 0;
+        uint[] memory tokens = getAllTokenByOwnerAddress(_owner);
+        for (uint i=0; i<tokens.length; i++){
+            totalBalance += accounts[tokens[i]].currentBalance;
+        }
+        return totalBalance;
+    }
 }
