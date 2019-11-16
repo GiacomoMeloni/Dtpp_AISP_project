@@ -59,7 +59,7 @@ contract BAT is ERC721 {
 
     function checkIbanAlreadyExist (string memory _iban, address _owner) public returns (bool){
         if (lastTokenId != 0){
-            for (uint i=1; i<lastTokenId; i++){
+            for (uint i=1; i<=lastTokenId; i++){
                 if (keccak256(abi.encodePacked((accounts[i].iban))) == keccak256(abi.encodePacked((_iban)))){
                     if (ownerOf(i) == _owner){
                         emit bankAccountAlreadyCreated(_owner,i,accounts[i].iban);
@@ -104,6 +104,25 @@ contract BAT is ERC721 {
         emit balanceUpdated (msg.sender, _id, _newBalance);
     }
 
+    function checkIfTokenExistForGivenAddress (address _account) view public returns (bool){
+        for (uint i=1; i<=lastTokenId; i++){
+            if (ownerOf(i) == _account){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function returnIdGivenIBAN (string memory _iban)view public returns (uint){
+        // if (checkIfTokenExistForGivenAddress(msg.sender)){
+        for (uint i=1; i<=lastTokenId; i++){
+            if (keccak256(abi.encodePacked((accounts[i].iban))) == keccak256(abi.encodePacked((_iban)))){
+                return i;
+            }
+        }
+        // }
+        return 0;
+    }
 //    TO DO
 //    Function that returns the token list owned by a specified address
 //    function getAllTokenByOwnerAddress(address _owner) public returns (uint[]){
@@ -128,5 +147,4 @@ contract BAT is ERC721 {
 //      return totalBalance;
 //  }
 
-    
 }

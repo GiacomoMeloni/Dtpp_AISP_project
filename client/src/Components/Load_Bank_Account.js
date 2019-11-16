@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App';
-// import Axios from "axios";
+
 
 class LoadBankAccount extends React.Component {
 

@@ -18,7 +18,9 @@ class App extends Component {
             web3: null,
             accounts: null,
             contract: null,
-            value: 'deutsche_Bank'
+            instance: null,
+            value: 'deutsche_Bank',
+            token: null
         };
     }
 

@@ -22,7 +22,12 @@ require('dotenv').config();
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const path = require('path');
 // const infuraKey = "fj4jll3k.....";
-//
+
+var privateKeys = [
+  "2a14e6fc2f7454ddf1504dc967ae39a127aaf6764c62ad04b74eb9889dac8297",
+  "fb52d2931a5e0eacc73e83466eb1ca910c4da234df35853d7b177c430e811c93",
+  "0b554be8d82961e10f649492452232cfe46c83a7353d786700f9a09e98086c86"]
+
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
@@ -67,7 +72,7 @@ module.exports = {
       provider: () => new HDWalletProvider(
           process.env.MNEMONIC,
           `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-          0),
+          0,3),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
