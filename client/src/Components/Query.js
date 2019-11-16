@@ -11,6 +11,7 @@ class QueryPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = props.state;
+        console.log(this.state.iban);
         if(window.location.href != "https://localhost:3000/queryPage") {
             this.state.token = (window.location.hash.split('=', 2)[1]).split('&', 1);
             console.log(this.state.token);
@@ -50,7 +51,33 @@ class QueryPage extends React.Component {
         if (this.state.token){
             this.getCashAccounts();
             this.getAddresses();
+            this.getInfoBankAccountOwner();
+            this.getInfoCreditCard();
         }
+    }
+    // https://simulator-api.db.com:443/gw/dbapi/banking/creditCards/v1/
+    async getTransactions(iban){
+        const limit = "10";
+        const url = "https://simulator-api.db.com:443/gw/dbapi/banking/transactions/v2/?iban=" + iban.toString() + "&sortBy=bookingDate%5BASC%5D&limit=" + limit + "&offset=0";
+
+        const response =
+            await axios.get(url,
+                {headers: {Authorization: "Bearer "+this.state.token}});
+        console.log(response.data);
+    }
+
+    async getInfoCreditCard(){
+        const response =
+            await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/creditCards/v1/",
+                {headers: {Authorization: "Bearer "+this.state.token}});
+        console.log(response.data);
+    }
+
+    async getInfoBankAccountOwner(){
+        const response =
+            await axios.get("https://simulator-api.db.com:443/gw/dbapi/referenceData/partners/v2/",
+                {headers: {Authorization: "Bearer "+this.state.token}});
+        console.log(response.data);
     }
 
     async getCashAccounts(){
@@ -58,16 +85,18 @@ class QueryPage extends React.Component {
             await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
                 {headers: {Authorization: "Bearer "+this.state.token}});
         console.log(response.data);
-        console.log(response.data.accounts[0].iban.toString());
-        console.log(this.state.instance);
+        const iban = response.data.accounts[0].iban;
+        this.getTransactions(iban);
+        // console.log(response.data.accounts[0].iban.toString());
+        // console.log(this.state.instance);
         // await this.state.instance.methods.createBankAccount(response.data.accounts[0].iban,1).send({ from: this.state.address});
         //
-        const idToken = await this.state.instance.methods.returnIdGivenIBAN(response.data.accounts[0].iban).call();
-        console.log(idToken);
+        // const idToken = await this.state.instance.methods.returnIdGivenIBAN(response.data.accounts[0].iban).call();
+        // console.log(idToken);
         // await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(response.data.accounts[0].currentBalance * 100,10)).send({ from: this.state.address});
         //
-        const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
-        console.log(bankAccount/100);
+        // const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
+        // console.log(bankAccount/100);
     }
 
     async getAddresses(){
