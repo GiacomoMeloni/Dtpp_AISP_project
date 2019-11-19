@@ -12981,8 +12981,8 @@
         }
       },
       "links": {},
-      "address": "0x8F978bD11789a511678D5C665246a65802CBd53B",
-      "transactionHash": "0x4337c363a6fb9bd901bf823c602201df22a3d19adf21bc36c38ca2401a9218ab"
+      "address": "0x736A1Cc511Fc8810098341614Fd406c66bAFB8B1",
+      "transactionHash": "0x92dcc412f7247161d791879f40202b83bc168e970d9b11846804d212d5673587"
     },
     "5777": {
       "events": {
@@ -13154,12 +13154,12 @@
         }
       },
       "links": {},
-      "address": "0xC293a5d260B61cD58ad2D57563B0534A955178Ec",
-      "transactionHash": "0xee5de7b26f1e5ca4513398d56235fc3991dea3463314793a207a8b8355c4509b"
+      "address": "0x657ed35Acb78fc3c1D7A876CBEb56b27EBf3162e",
+      "transactionHash": "0x67ba9bbc1b0e5d879066bbf7c8659b53d0a5382e54a9ec84c7a6cfd38c84ac80"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-16T16:19:50.708Z",
+  "updatedAt": "2019-11-19T12:15:38.302Z",
   "devdoc": {
     "methods": {
       "approve(address,uint256)": {
