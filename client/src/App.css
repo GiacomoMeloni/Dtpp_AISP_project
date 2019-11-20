@@ -16,20 +16,20 @@ h1{
   margin-top: 5%;
   width: 950px;
   height: 330px;
-  opacity: 0.9;
+  opacity: 1.0;
+  z-index: 2;
 }
 
 .App {
   background-image: url("./images/PSD_2_Post_Header.jpg");
   background-repeat: no-repeat, repeat;
   background-size: cover; /* Resize the background image to cover the entire container */
-  /*opacity: 0.5;*/
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   position: absolute;
-  z-index: -1;
+  z-index: 1;
 }
 
 .App {
@@ -63,4 +63,31 @@ h1{
   to {
     transform: rotate(360deg);
   }
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid yellow;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.button1:hover {
+  background-color: yellow;
+  color: white;
 }

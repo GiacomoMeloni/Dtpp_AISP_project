@@ -43,7 +43,7 @@ class Home extends React.Component {
 
     render() {
         return (
-                <div className="normalOpacity homeStyle">
+                <div className="homeStyle">
                     <div>
                         <h1>Welcome to Distrubuted TPP AISP project</h1>
                         <p>Please select an Ethereum Address from Metamask and then select the API to connect with from the list below</p>
@@ -57,7 +57,7 @@ class Home extends React.Component {
                         {/*<div>The token of {this.state.address} has balance: {this.state.balanceValue}</div>*/}
                     </div>
                     <div>
-                        <button><Link to="/dashboard" render={(props)=><Dashboard {...props} state = {this.state}/>}>Accedi</Link></button>
+                        <button className="button button1" onClick={()=> {window.location.href = '/dashboard';}}>Accedi</button>
                     </div>
                 </div>
         );

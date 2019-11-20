@@ -13866,12 +13866,12 @@
         }
       },
       "links": {},
-      "address": "0x8f324eeEC6121A151896B60fA5C22C23E4d7Edf4",
-      "transactionHash": "0xbe150367f5c51b6dca26c232530f0e0492d8420587ae4f35f08f4969ed9b1e0b"
+      "address": "0x82acbaD90D71225C9170478F3687C3923e07c511",
+      "transactionHash": "0x97ad464ff1022e75b98b03834b50a899ac3c3db2a00dd3b01a846468a05df960"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-20T16:02:47.684Z",
+  "updatedAt": "2019-11-20T18:02:36.158Z",
   "devdoc": {
     "methods": {
       "approve(address,uint256)": {

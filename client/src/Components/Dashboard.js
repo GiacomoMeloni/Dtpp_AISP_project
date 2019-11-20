@@ -96,7 +96,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        let overallBalance;
+        let overallBalance = (0).toString()+' €';
         if (this.state.overallBalance != 0){
             overallBalance = (parseFloat(this.state.overallBalance)/100).toString() + ' €';
         }

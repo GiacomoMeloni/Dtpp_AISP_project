@@ -16,7 +16,7 @@ class BAT_Token extends React.Component {
                   <p># {this.props.token}</p>
                   <p>{this.props.addressOwner}</p>
                   <p>{this.props.iban}</p>
-                  <p>{balance} {this.props.currencyCode}</p>
+                  <h3>{balance} {this.props.currencyCode}</h3>
               </div>
           </div>
         );
