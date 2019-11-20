@@ -1,4 +1,6 @@
 import React from 'react';
+import "../style/BAT_Token.css";
+import BAT_Token_Logo from "../images/BAT_Token.png";
 
 class BAT_Token extends React.Component {
     constructor(){
@@ -8,12 +10,14 @@ class BAT_Token extends React.Component {
     render() {
         const balance = parseFloat(this.props.balance)/100;
         return(
-          <div class="batContainer">
-              <p>{this.props.token}</p>
-              <p>{this.props.addressOwner}</p>
-              <p>{this.props.iban}</p>
-              <p>{balance}</p>
-              <p>{this.props.currencyCode}</p>
+          <div className="batContainer">
+              <img src={BAT_Token_Logo} className="imageToken"/>
+              <div>
+                  <p># {this.props.token}</p>
+                  <p>{this.props.addressOwner}</p>
+                  <p>{this.props.iban}</p>
+                  <p>{balance} {this.props.currencyCode}</p>
+              </div>
           </div>
         );
     }

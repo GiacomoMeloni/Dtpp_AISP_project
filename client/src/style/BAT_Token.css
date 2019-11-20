@@ -1,0 +1,12 @@
+.batContainer{
+    background: aliceblue;
+    border-radius: 25px;
+    border: 2px solid yellow;
+    width: 400px;
+    margin: 10px ;
+}
+
+.imageToken {
+    width:70px;
+    height:70px;
+}

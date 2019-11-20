@@ -1,0 +1,25 @@
+#tokensContainer {
+    display:flex;
+    float: left;
+    margin-top: 50px;
+    align-items: center;
+}
+
+#BatToken {
+    display: inline-block;
+}
+
+#overallBalance_container{
+    background: aliceblue;
+    border-radius: 15px;
+    border: 2px solid yellow;
+    width: 500px;
+    position: relative;
+    margin-top: 25px;
+    left: 37%;
+    display: block;
+}
+
+#dashboard {
+    text-align: center;
+}

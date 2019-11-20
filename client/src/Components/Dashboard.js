@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
 import BAT_Token from "./BAT_Token";
+import "../style/dashboard.css";
 
 const axios = require('axios').default;
 
@@ -101,7 +102,7 @@ class Dashboard extends React.Component {
         }
 
         return (
-            <div>
+            <div id="dashboard">
                 <div>
                     <h1>Welcome to Dashboard</h1>
                 </div>
@@ -117,13 +118,13 @@ class Dashboard extends React.Component {
                     <input type="submit" value="Submit" />
                 </form>
 
-                <div>
+                <div id="overallBalance_container">
                     <h1>Overall Balance: {overallBalance}</h1>
                 </div>
 
                 <div id="tokensContainer">
                     {this.state.bat.map((value, index) => {
-                        return <BAT_Token iban={value[0]} currencyCode={value[1]} balance={value[2]} token={value[3]} addressOwner={value[4]}/>
+                        return <BAT_Token iban={value[0]} currencyCode={value[1]} balance={value[2]} token={value[3]} addressOwner={value[4]} id="BatToken"/>
                     })}
                 </div>
 
