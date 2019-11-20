@@ -6,12 +6,14 @@ class BAT_Token extends React.Component {
     }
 
     render() {
+        const balance = parseFloat(this.props.balance)/100;
         return(
-          <div>
-              {/*<p>{this.props.tokenId}</p>*/}
-              {/*<p>{this.props.eth_address}</p>*/}
-              {/*<p>{this.props.currentIban}</p>*/}
-              {/*<p>{this.props.currentBalance}</p>*/}
+          <div class="batContainer">
+              <p>{this.props.token}</p>
+              <p>{this.props.addressOwner}</p>
+              <p>{this.props.iban}</p>
+              <p>{balance}</p>
+              <p>{this.props.currencyCode}</p>
           </div>
         );
     }

@@ -85,9 +85,9 @@ class QueryPage extends React.Component {
             {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
             const accounts = response.data.accounts;
             for (const element of accounts) {
-                await this.state.instance.methods.createBankAccount(element.iban,1).send({ from: this.state.address});
+                await this.state.instance.methods.createBankAccount(element.iban,element.currencyCode,parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
                 const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
-                await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
+                // await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
                 const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
                 console.log(element);
                 console.log(bankAccount);
@@ -109,7 +109,7 @@ class QueryPage extends React.Component {
     render() {
         return (
             <div>
-                <button><Link to="/dashboard" render={(props)=><Dashboard {...props} state = {this.state}/>}>Back To Dashboard</Link></button>
+                <button onClick={()=> {window.location.href = '/dashboard';}}>Back to dashboard</button>
             </div>
         );
     }

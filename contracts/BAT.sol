@@ -4,17 +4,15 @@ import "node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 
 contract BAT is ERC721 {
 
-    enum Currency { EUR, USD }
-
     struct BankAccount {
         string iban;
-        Currency currencyCode;
+        string currencyCode;
         int currentBalance;
     }
 
     uint lastTokenId;
 
-    mapping(uint256 => BankAccount) public accounts;
+    mapping(uint256 => BankAccount) private accounts;
 
     /*TO DO
     * Add a function to know if an IBAN is from the current sender or it's owned by another
@@ -75,20 +73,25 @@ contract BAT is ERC721 {
         return false;
     }
 
-    function createBankAccount(string memory _iban, Currency _currencyCode) onlyIfIbanDidNotExist(_iban, msg.sender) public {
+    function createBankAccount(string memory _iban, string memory _currencyCode, int _balance) onlyIfIbanDidNotExist(_iban, msg.sender) public {
         lastTokenId += 1;
 
         accounts[lastTokenId].iban = _iban;
         accounts[lastTokenId].currencyCode = _currencyCode;
+        accounts[lastTokenId].currentBalance = _balance;
 
         _mint(msg.sender, lastTokenId);
 
         emit bankAccountCreated(msg.sender, lastTokenId, accounts[lastTokenId].iban);
     }
 
-    function getBankAccount(uint _id) view public returns(string memory, Currency, int) {
+    function getBankAccount(uint _id) view public returns(string memory, string memory, int, uint, address) {
         BankAccount memory acc = accounts[_id];
-        return(acc.iban, acc.currencyCode, acc.currentBalance);
+        return(acc.iban, acc.currencyCode, acc.currentBalance, _id, ownerOf(_id));
+    }
+
+    function getCurrencyCode(uint _id) view public returns (string memory){
+        return accounts[_id].currencyCode;
     }
 
     function getAccountBalance (uint _id) view public returns (int) {

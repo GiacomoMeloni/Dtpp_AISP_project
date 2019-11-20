@@ -15,6 +15,7 @@ class Dashboard extends React.Component {
             web3: null,
             instance: null,
             value: 'deutsche_Bank',
+            overallBalance: 0,
             bat: [],
             token: null
         };
@@ -23,6 +24,8 @@ class Dashboard extends React.Component {
             this.state.token = (window.location.hash.split('=', 2)[1]).split('&', 1);
             console.log(this.state.token);
         }
+        // this.laodWeb3();
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -62,12 +65,15 @@ class Dashboard extends React.Component {
         }
     };
 
-    async componentDidMount (){
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return true;
+    }
+
+    async componentWillMount (){
         this.laodWeb3();
     }
 
     async getBATToken() {
-        console.log(1);
         var tokens = new Array();
         await this.state.instance.methods.getAllTokenByOwnerAddress(this.state.address).call().then(async (response) => {
             for (const id of response){
@@ -76,29 +82,24 @@ class Dashboard extends React.Component {
                 }
             }
             this.setState({bat: tokens});
-            this.state.overallBalance =  await this.state.instance.methods.getOverallBalance(this.state.address).call();
+            const overallBalance = await this.state.instance.methods.getOverallBalance(this.state.address).call();
+            this.setState({overallBalance: overallBalance});
             console.log(this.state.bat);
+            for (const ob of this.state.bat){
+                console.log(ob[0]);
+                console.log(ob[1]);
+                console.log(ob[2]);
+            }
             console.log(this.state.overallBalance);
         });
     }
 
-    // async getCashAccounts(){
-    //     await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
-    //             {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
-    //                      const accounts = response.data.accounts;
-    //                      for (const element of accounts) {
-    //                          await this.state.instance.methods.createBankAccount(element.iban,1).send({ from: this.state.address});
-    //                          const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
-    //                          await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
-    //                          const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
-    //                          console.log(element);
-    //                          console.log(bankAccount);
-    //                      }
-    //              });
-    // }
-
     render() {
-        // this.checkTokenExist();
+        let overallBalance;
+        if (this.state.overallBalance != 0){
+            overallBalance = (parseFloat(this.state.overallBalance)/100).toString() + ' €';
+        }
+
         return (
             <div>
                 <div>
@@ -115,6 +116,18 @@ class Dashboard extends React.Component {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
+
+                <div>
+                    <h1>Overall Balance: {overallBalance}</h1>
+                </div>
+
+                <div id="tokensContainer">
+                    {this.state.bat.map((value, index) => {
+                        return <BAT_Token iban={value[0]} currencyCode={value[1]} balance={value[2]} token={value[3]} addressOwner={value[4]}/>
+                    })}
+                </div>
+
+                {/*<BAT_Token iban={this.state.bat[0].iban} currentBalance="102344"/>*/}
             </div>
         );
     }

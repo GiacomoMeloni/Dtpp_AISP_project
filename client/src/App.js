@@ -22,7 +22,7 @@ class App extends Component {
             value: 'deutsche_Bank',
             token: null,
             bat: [],
-            overallBalance: 0,
+
         };
     }
 
