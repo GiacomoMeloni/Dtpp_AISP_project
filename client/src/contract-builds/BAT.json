@@ -13154,12 +13154,12 @@
         }
       },
       "links": {},
-      "address": "0x657ed35Acb78fc3c1D7A876CBEb56b27EBf3162e",
-      "transactionHash": "0x67ba9bbc1b0e5d879066bbf7c8659b53d0a5382e54a9ec84c7a6cfd38c84ac80"
+      "address": "0x979d265c8F059Af9978BB8Fc3c9E794a56Ef3A66",
+      "transactionHash": "0x4806f52e9af9870776deeb78dc3f8a112f7b9aea68eef300b5c4a318903af5cf"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-19T12:15:38.302Z",
+  "updatedAt": "2019-11-19T22:40:48.394Z",
   "devdoc": {
     "methods": {
       "approve(address,uint256)": {

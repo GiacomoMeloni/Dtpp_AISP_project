@@ -21,7 +21,10 @@ class App extends Component {
             web3: null,
             instance: null,
             value: 'deutsche_Bank',
-            token: null
+            token: null,
+            bat: [],
+            overallBalance: 0,
+
         };
     }
 
@@ -39,7 +42,6 @@ class App extends Component {
             this.setState({instance : new this.state.web3.eth.Contract(
                     BAT_contract.abi, deployedNetwork.address
                 )});
-            console.log(this.state);
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(

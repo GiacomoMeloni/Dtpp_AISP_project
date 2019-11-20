@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
-import LoadBankAccount from "./Load_Bank_Account";
+import BAT_Token from "./BAT_Token";
 
 const axios = require('axios').default;
 
@@ -27,7 +27,7 @@ class Dashboard extends React.Component {
         // alert('Your favorite flavor is: ' + this.state.value);
         event.preventDefault();
         if (bank === "deutsche_Bank"){
-            window.location.href = 'https://simulator-api.db.com/gw/oidc/authorize?response_type=token&redirect_uri=https://localhost:3000/dashboard&client_id=2a01cbd0-a7a1-405b-88c9-5ecc51e1a7db';
+            window.location.href = 'https://simulator-api.db.com/gw/oidc/authorize?response_type=token&redirect_uri=https://localhost:3000/queryPage&client_id=2a01cbd0-a7a1-405b-88c9-5ecc51e1a7db';
         }
     }
 
@@ -36,22 +36,24 @@ class Dashboard extends React.Component {
         try {
             // Get network provider and web3 instance.
             this.state.web3 = await getWeb3();
-            console.log(this.state.web3);
             // Use web3 to get the user's accounts.
             const account = (await this.state.web3.eth.getAccounts())[0];
             this.setState({ address: account });
-            console.log(this.state.address);
             // Get the contract instance.
             const networkId = await this.state.web3.eth.net.getId();
             const deployedNetwork = BAT_contract.networks[networkId];
             this.setState({instance : new this.state.web3.eth.Contract(
                     BAT_contract.abi, deployedNetwork.address
                 )});
-            console.log(this.state.instance);
-
-            if (this.state.token){
-                this.getCashAccounts();
-            }
+            // const checkToken = await this.state.instance.methods.checkIfTokenExistForGivenAddress(this.state.address).call();
+            // if (checkToken){
+            //     const overallBalance = await this.state.instance.methods.getOverallBalance(this.state.address).call();
+            //     console.log(overallBalance);
+            // }
+            //
+            // if (this.state.token){
+            //     this.getCashAccounts();
+            // }
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -64,43 +66,20 @@ class Dashboard extends React.Component {
         this.laodWeb3();
     }
 
-    async getCashAccounts(){
-        const response =
-            await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
-                {headers: {Authorization: "Bearer "+this.state.token}});
-        // console.log(response.data);
-        const iban = response.data.accounts[0].iban;
-        // this.getTransactions(iban);
-        // console.log(response.data.accounts[0].iban.toString());
-        // console.log(this.state.instance);
-        await this.state.instance.methods.createBankAccount(response.data.accounts[0].iban,1).send({ from: this.state.address});
-
-        const idToken = await this.state.instance.methods.returnIdGivenIBAN(response.data.accounts[0].iban).call();
-        // console.log(idToken);
-        await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(response.data.accounts[0].currentBalance * 100,10)).send({ from: this.state.address});
-
-        let bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
-        bankAccount = bankAccount/100.00;
-        console.log(bankAccount);
-    }
-
-    async checkTokenExist() {
-        const check = await this.state.instance.methods.checkIfTokenExistForGivenAddress(this.state.address).call();
-        console.log(check);
-        if (check === true){
-            return(
-                <div>
-                    <h2>L'account possiede token</h2>
-                </div>
-            );
-        }else {
-            return(
-                <div>
-                    <h2>L'account non possiede token</h2>
-                </div>
-            );
-        }
-    }
+    // async getCashAccounts(){
+    //     await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
+    //             {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
+    //                      const accounts = response.data.accounts;
+    //                      for (const element of accounts) {
+    //                          await this.state.instance.methods.createBankAccount(element.iban,1).send({ from: this.state.address});
+    //                          const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
+    //                          await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
+    //                          const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
+    //                          console.log(element);
+    //                          console.log(bankAccount);
+    //                      }
+    //              });
+    // }
 
     render() {
         // this.checkTokenExist();
@@ -109,7 +88,7 @@ class Dashboard extends React.Component {
                 <div>
                     <h1>Welcome to Dashboard</h1>
                 </div>
-                
+
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Choose your bank:

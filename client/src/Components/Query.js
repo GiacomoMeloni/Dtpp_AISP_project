@@ -3,6 +3,8 @@ import { Redirect } from 'react-router';
 import '../App';
 import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
+import {Link} from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 const axios = require('axios').default;
 
@@ -33,6 +35,9 @@ class QueryPage extends React.Component {
             this.setState({instance : new this.state.web3.eth.Contract(
                     BAT_contract.abi, deployedNetwork.address
                 )});
+            if (this.state.token){
+                this.getCashAccounts();
+            }
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -44,14 +49,11 @@ class QueryPage extends React.Component {
     componentDidMount() {
         this.laodWeb3();
 
-        if (this.state.token){
-            this.getCashAccounts();
+        // if (this.state.token){
+        //     this.getCashAccounts();
             // this.getAddresses();
             // this.getInfoBankAccountOwner();
             // this.getInfoCreditCard();
-        }
-
-        this.setState({queryDone: true});
     }
 
     // async getTransactions(iban){
@@ -79,22 +81,18 @@ class QueryPage extends React.Component {
     // }
 
     async getCashAccounts(){
-        const response =
-            await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
-                {headers: {Authorization: "Bearer "+this.state.token}});
-        // console.log(response.data);
-        const iban = response.data.accounts[0].iban;
-        // this.getTransactions(iban);
-        // console.log(response.data.accounts[0].iban.toString());
-        // console.log(this.state.instance);
-        await this.state.instance.methods.createBankAccount(response.data.accounts[0].iban,1).send({ from: this.state.address});
-
-        const idToken = await this.state.instance.methods.returnIdGivenIBAN(response.data.accounts[0].iban).call();
-        // console.log(idToken);
-        await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(response.data.accounts[0].currentBalance * 100,10)).send({ from: this.state.address});
-
-        const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
-        // console.log(bankAccount);
+        await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
+            {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
+            const accounts = response.data.accounts;
+            for (const element of accounts) {
+                await this.state.instance.methods.createBankAccount(element.iban,1).send({ from: this.state.address});
+                const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
+                await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
+                const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
+                console.log(element);
+                console.log(bankAccount);
+            }
+        });
     }
 
     // async getAddresses(){
@@ -109,11 +107,11 @@ class QueryPage extends React.Component {
     }
 
     render() {
-        return this.state.queryDone
-            ? <Redirect to="/dashboard" />
-            : <div>
-                <h2>Loading...</h2>
+        return (
+            <div>
+                <button><Link to="/dashboard" render={(props)=><Dashboard {...props} state = {this.state}/>}>Back To Dashboard</Link></button>
             </div>
+        );
     }
 }
 
