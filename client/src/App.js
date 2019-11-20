@@ -16,7 +16,6 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            queryDone: false,
             address: null,
             web3: null,
             instance: null,
@@ -24,7 +23,6 @@ class App extends Component {
             token: null,
             bat: [],
             overallBalance: 0,
-
         };
     }
 

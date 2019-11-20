@@ -10,7 +10,15 @@ const axios = require('axios').default;
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = props.state;
+        this.state = {
+            address: null,
+            web3: null,
+            instance: null,
+            value: 'deutsche_Bank',
+            bat: [],
+            token: null
+        };
+
         if(window.location.href != "https://localhost:3000/dashboard") {
             this.state.token = (window.location.hash.split('=', 2)[1]).split('&', 1);
             console.log(this.state.token);
@@ -45,15 +53,7 @@ class Dashboard extends React.Component {
             this.setState({instance : new this.state.web3.eth.Contract(
                     BAT_contract.abi, deployedNetwork.address
                 )});
-            // const checkToken = await this.state.instance.methods.checkIfTokenExistForGivenAddress(this.state.address).call();
-            // if (checkToken){
-            //     const overallBalance = await this.state.instance.methods.getOverallBalance(this.state.address).call();
-            //     console.log(overallBalance);
-            // }
-            //
-            // if (this.state.token){
-            //     this.getCashAccounts();
-            // }
+            this.getBATToken();
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -64,6 +64,22 @@ class Dashboard extends React.Component {
 
     async componentDidMount (){
         this.laodWeb3();
+    }
+
+    async getBATToken() {
+        console.log(1);
+        var tokens = new Array();
+        await this.state.instance.methods.getAllTokenByOwnerAddress(this.state.address).call().then(async (response) => {
+            for (const id of response){
+                if (id!=0){
+                    tokens.push(await this.state.instance.methods.getBankAccount(id).call());
+                }
+            }
+            this.setState({bat: tokens});
+            this.state.overallBalance =  await this.state.instance.methods.getOverallBalance(this.state.address).call();
+            console.log(this.state.bat);
+            console.log(this.state.overallBalance);
+        });
     }
 
     // async getCashAccounts(){
