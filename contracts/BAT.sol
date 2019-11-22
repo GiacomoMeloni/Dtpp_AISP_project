@@ -116,6 +116,16 @@ contract BAT is ERC721 {
         return false;
     }
 
+    function checkIfTokenExistGivenIbanAndOwner (string memory _iban, address _account) public view returns(bool) {
+        for (uint i=1; i<=lastTokenId; i++){
+            if (keccak256(abi.encodePacked((accounts[i].iban))) == keccak256(abi.encodePacked((_iban))) &&
+            ownerOf(returnIdGivenIBAN(_iban))==_account){
+                return true;
+            }
+        }
+        return false;
+    }
+
     function returnIdGivenIBAN (string memory _iban)view public returns (uint){
         // if (checkIfTokenExistForGivenAddress(msg.sender)){
         for (uint i=1; i<=lastTokenId; i++){

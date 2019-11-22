@@ -85,12 +85,25 @@ class QueryPage extends React.Component {
             {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
             const accounts = response.data.accounts;
             for (const element of accounts) {
-                await this.state.instance.methods.createBankAccount(element.iban,element.currencyCode,parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
-                const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
-                // await this.state.instance.methods.SetBankAccountBalance(idToken, parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
-                const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
-                console.log(element);
-                console.log(bankAccount);
+                await this.state.instance.methods.checkIfTokenExistGivenIbanAndOwner(element.iban, this.state.address).call().then(async (response) => {
+                    if (response == false){
+                        await this.state.instance.methods.createBankAccount(element.iban,element.currencyCode,parseInt(element.currentBalance * 100,10)).send({ from: this.state.address});
+                        const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
+                        const bankAccount = await this.state.instance.methods.getBankAccount(idToken).call();
+                        console.log(element);
+                        console.log(bankAccount);
+                    } else {
+                        console.log("I'm here'");
+                        const idToken = await this.state.instance.methods.returnIdGivenIBAN(element.iban).call();
+                        await this.state.instance.methods.getAccountBalance(idToken).call().then(async (response) => {
+                            if (response != parseInt(element.currentBalance * 100,10)){
+                                await this.state.instance.methods.SetBankAccountBalance(idToken,parseInt(element.currentBalance * 100,10)).send({from: this.state.address});
+                            }else {
+                                console.log("No need to update token balance");
+                            }
+                        });
+                    }
+                });
             }
         });
     }
