@@ -18,7 +18,7 @@ contract BAT is ERC721 {
     * Add a function to know if an IBAN is from the current sender or it's owned by another
     * account and the send the events*/
 
-    modifier onlyIfIbanDidNotExist(string memory _iban, address _owner) {
+    modifier onlyIfIbanDoNotExist(string memory _iban, address _owner) {
         bool check = checkIbanAlreadyExist(_iban,_owner);
         require(
             check == false,
@@ -73,7 +73,7 @@ contract BAT is ERC721 {
         return false;
     }
 
-    function createBankAccount(string memory _iban, string memory _currencyCode, int _balance) onlyIfIbanDidNotExist(_iban, msg.sender) public {
+    function createBankAccount(string memory _iban, string memory _currencyCode, int _balance) onlyIfIbanDoNotExist(_iban, msg.sender) public {
         lastTokenId += 1;
 
         accounts[lastTokenId].iban = _iban;

@@ -1,12 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
 import BAT_Token from "./BAT_Token";
 import "../style/dashboard.css";
-
-const axios = require('axios').default;
-
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -25,8 +21,6 @@ class Dashboard extends React.Component {
             this.state.token = (window.location.hash.split('=', 2)[1]).split('&', 1);
             console.log(this.state.token);
         }
-        // this.laodWeb3();
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -36,7 +30,6 @@ class Dashboard extends React.Component {
 
     handleSubmit(event) {
         const bank = this.state.value;
-        // alert('Your favorite flavor is: ' + this.state.value);
         event.preventDefault();
         if (bank === "deutsche_Bank"){
             window.location.href = 'https://simulator-api.db.com/gw/oidc/authorize?response_type=token&redirect_uri=https://localhost:3000/queryPage&client_id=2a01cbd0-a7a1-405b-88c9-5ecc51e1a7db';
@@ -86,11 +79,6 @@ class Dashboard extends React.Component {
             const overallBalance = await this.state.instance.methods.getOverallBalance(this.state.address).call();
             this.setState({overallBalance: overallBalance});
             console.log(this.state.bat);
-            for (const ob of this.state.bat){
-                console.log(ob[0]);
-                console.log(ob[1]);
-                console.log(ob[2]);
-            }
             console.log(this.state.overallBalance);
         });
     }
@@ -100,24 +88,24 @@ class Dashboard extends React.Component {
         if (this.state.overallBalance != 0){
             overallBalance = (parseFloat(this.state.overallBalance)/100).toString() + ' €';
         }
-
         return (
             <div id="dashboard">
                 <div>
-                    <h1>Welcome to Dashboard</h1>
+                    <h1 id="titleDashboard">Welcome to Dashboard</h1>
                 </div>
-
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Choose your bank:
-                        <select value={this.state.value} onChange={this.handleChange}>
-                            <option value="deutsche_Bank">Deutsche Bank</option>
-                            <option value="internal_Sandbox">Internal Sandbox</option>
-                        </select>
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
-
+                <div id="form-container">
+                    <form onSubmit={this.handleSubmit}>
+                        <label>Choose your bank:</label>
+                            <select value={this.state.value} onChange={this.handleChange}>
+                                <option value="deutsche_Bank">Deutsche Bank</option>
+                                <option value="unicredit">Unicredit</option>
+                                <option value="bancaSella">Banca Sella</option>
+                                <option value="sanPaolo">Intesa San Paolo</option>
+                                <option value="nordea">Nordea</option>
+                            </select>
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
                 <div id="overallBalance_container">
                     <h1>Overall Balance: {overallBalance}</h1>
                 </div>

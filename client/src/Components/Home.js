@@ -46,18 +46,14 @@ class Home extends React.Component {
                 <div className="homeStyle">
                     <div>
                         <h1>Welcome to Distrubuted TPP AISP project</h1>
-                        <p>Please select an Ethereum Address from Metamask and then select the API to connect with from the list below</p>
 
                         <h2>Your current address is:</h2>
                         <h1>{this.state.address}</h1>
 
-                        <p>
-                            You have to authorize the transactions through Metamask...
-                        </p>
-                        {/*<div>The token of {this.state.address} has balance: {this.state.balanceValue}</div>*/}
+                        <p>Please click "Enter" to display your Dashboard</p>
                     </div>
                     <div>
-                        <button className="button button1" onClick={()=> {window.location.href = '/dashboard';}}>Accedi</button>
+                        <button className="button button1" onClick={()=> {window.location.href = '/dashboard';}}>Enter</button>
                     </div>
                 </div>
         );

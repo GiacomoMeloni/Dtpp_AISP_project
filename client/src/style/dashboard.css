@@ -5,6 +5,72 @@
     align-items: center;
 }
 
+#titleDashboard {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+}
+
+label {
+    display: block;
+    font-size: 17px;
+    font-style: normal;
+    color: black;
+
+}
+
+select{
+    margin-top: 15px;
+    margin-right: 20px;
+    height: 40px;
+    width: 250px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    background-color: lightblue;
+    top: 100%;
+}
+
+option{
+    padding-left: 10%;
+}
+
+input {
+    background-color: lightcyan; /* Green */
+    border: 2px solid yellow;
+    border-radius: 5px;
+    color: black;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+input:hover {
+    background-color: lightblue;
+    color: darkblue;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#form-container {
+    width: 400px;
+    position: relative;
+    left: 39%;
+    background: white;
+    text-align: center;
+    border: yellow;
+    border-radius: 10px;
+    padding: 10px;
+    border: 2px solid yellow;
+}
+
 #BatToken {
     display: inline-block;
 }
