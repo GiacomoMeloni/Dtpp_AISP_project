@@ -4,6 +4,7 @@ import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
 import '../App';
 import "../style/queryPage.css";
+import {rejectSeries} from "async";
 
 const axios = require('axios').default;
 
@@ -17,7 +18,8 @@ class QueryPage extends React.Component {
             instance: null,
             token: null,
             accounts: null,
-            personal_info: null
+            personal_info: null,
+            isRegistered: []
         };
         console.log(this.state.iban);
         if(window.location.href != "https://localhost:3000/queryPage") {
@@ -52,45 +54,19 @@ class QueryPage extends React.Component {
     };
 
     componentWillMount() {
-        this.laodWeb3();
-
-        // if (this.state.token){
-        //     this.getCashAccounts();
-        this.getCashAccounts();
-        this.getInfoBankAccountOwner();
-            // this.getInfoCreditCard();
+        this.laodWeb3().then(async ()=>{
+            this.getCashAccounts();
+            this.getInfoBankAccountOwner();
+        });
     }
 
-    // async getTransactions(iban){
-    //     const limit = "10";
-    //     const url = "https://simulator-api.db.com:443/gw/dbapi/banking/transactions/v2/?iban=" + iban.toString() + "&sortBy=bookingDate%5BASC%5D&limit=" + limit + "&offset=0";
-    //
-    //     const response =
-    //         await axios.get(url,
-    //             {headers: {Authorization: "Bearer "+this.state.token}});
-    //     console.log(response.data);
-    // }
-    //
-    // async getInfoCreditCard(){
-    //     const response =
-    //         await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/creditCards/v1/",
-    //             {headers: {Authorization: "Bearer "+this.state.token}});
-    //     console.log(response.data);
-    // }
-
-
-    // async getAddresses(){
-    //     const response =
-    //         await axios.get("https://simulator-api.db.com:443/gw/dbapi/referenceData/addresses/v2",
-    //             {headers: {Authorization: "Bearer "+this.state.token}});
-    //     console.log(response.data);
-    // }
-    //
         async getInfoBankAccountOwner(){
             await axios.get("https://simulator-api.db.com:443/gw/dbapi/referenceData/partners/v2/",
                 {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
                     this.setState({personal_info: response.data.partners[0].naturalPerson});
                 console.log(this.state.personal_info);
+                console.log(this.state.personal_info.firstName);
+                console.log(this.state.personal_info.lastName);
             });
     }
 
@@ -98,7 +74,15 @@ class QueryPage extends React.Component {
         await axios.get("https://simulator-api.db.com:443/gw/dbapi/banking/cashAccounts/v2/?limit=10&offset=0",
             {headers: {Authorization: "Bearer "+this.state.token}}).then(async (response) => {
                 this.setState({accounts: response.data.accounts});
+                response.data.accounts.forEach(async (element) => {
+                    await this.state.instance.methods.checkIfTokenExistGivenIbanAndOwner(element.iban, this.state.address).call().then(async (response) => {
+                        var newRegistered = this.state.isRegistered;
+                        newRegistered.push(response);
+                        this.setState({isRegistered: newRegistered});
+                    });
+                });
                 console.log(this.state.accounts);
+                console.log(this.state.isRegistered);
             // for (const element of accounts) {
             //     await this.state.instance.methods.checkIfTokenExistGivenIbanAndOwner(element.iban, this.state.address).call().then(async (response) => {
             //         if (response == false){
@@ -127,31 +111,45 @@ class QueryPage extends React.Component {
         this.state.token = null;
     }
 
-
+    changeButtonStatus(iban) {
+        document.getElementById(iban).classList.remove('buttonBlockchain');
+        document.getElementById(iban).classList.add('buttonAlreadyInBlockchain');
+        document.getElementById(iban).innerText = "Registered";
+    }
 
     renderTableData(){
         return this.state.accounts.map((account, index) => {
-            return (
-                <tr className="tableRow" key={account.iban}>
-                    <td className="ibanColumn">{account.iban}</td>
-                    <td>
-                        <button className="buttonBlockchain" type="button" onClick={async () => {
-                            await this.state.instance.methods.createBankAccount(
-                            account.iban,account.currencyCode, parseInt(account.currentBalance * 100,10)).
-                            send({ from: this.state.address});}}>Put on blockchain</button>
-                    </td>
-                </tr>
-            )
+            if (this.state.isRegistered[index] === false){
+                return (
+                    <tr className="tableRow" key={account.iban}>
+                        <td className="ibanColumn">{account.iban}</td>
+                        <td>
+                            <button id={account.iban} className="buttonBlockchain" type="button" onClick={async () => {
+                                await this.state.instance.methods.createBankAccount(
+                                    account.iban,
+                                    account.currencyCode,
+                                    parseInt(account.currentBalance * 100, 10,),
+                                    this.state.personal_info.firstName,
+                                    this.state.personal_info.lastName).send({from: this.state.address}).then(()=>{
+                                    alert("Bank account with IBAN: " + account.iban + "  it's been registered");
+                                    this.changeButtonStatus(account.iban);});
+                                }}>Put on blockchain
+                            </button>
+                        </td>
+                    </tr>
+                );
+            } else {
+                return (
+                    <tr className="tableRow" key={account.iban}>
+                        <td className="ibanColumn">{account.iban}</td>
+                        <td>
+                            <button className="buttonAlreadyInBlockchain" type="button">Registered</button>
+                        </td>
+                    </tr>
+                );
+            }
         });
     }
-
-    handleIbanToInsert = async (account) => {
-        await this.state.instance.methods.createBankAccount(
-            account.iban,account.currencyCode,
-            parseInt(account.currentBalance * 100,10)).
-        send({ from: this.state.address});
-        return(console.log("nella merda"));
-    };
 
     render() {
         if (this.state.accounts === null){

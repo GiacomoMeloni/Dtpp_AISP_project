@@ -112,7 +112,14 @@ class Dashboard extends React.Component {
 
                 <div id="tokensContainer">
                     {this.state.bat.map((value, index) => {
-                        return <BAT_Token iban={value[0]} currencyCode={value[1]} balance={value[2]} token={value[3]} addressOwner={value[4]} id="BatToken"/>
+                        return <BAT_Token iban={value[0]}
+                                          currencyCode={value[1]}
+                                          balance={value[2]}
+                                          token={value[3]}
+                                          addressOwner={value[4]}
+                                          name = {value[5]}
+                                          surname = {value[6]}
+                                          id="BatToken"/>
                     })}
                 </div>
 

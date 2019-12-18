@@ -26,6 +26,21 @@
     color: blue;
 }
 
+.buttonAlreadyInBlockchain {
+    background-color: red; /* Green */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
 .buttonBlockchain {
     background-color: #4CAF50; /* Green */
     border: none;

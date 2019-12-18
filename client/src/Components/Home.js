@@ -1,13 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {BrowserRouter as Router, Switch, Route, /*Link*/} from "react-router-dom";
 
 import "../App.css";
 import '../App';
 import getWeb3 from "../utils/getWeb3";
 import BAT_contract from "../contract-builds/BAT";
-// import QueryPage from "./Query";
-import Dashboard from "./Dashboard";
 
 
 class Home extends React.Component {
@@ -17,6 +13,7 @@ class Home extends React.Component {
         console.log(this.state);
         console.log(props);
     }
+
 
     componentDidMount = async () => {
         try {
@@ -45,7 +42,7 @@ class Home extends React.Component {
         return (
                 <div className="homeStyle">
                     <div>
-                        <h1>Welcome to Distrubuted TPP AISP project</h1>
+                        <h1>Welcome to Distrubuted AISP project</h1>
 
                         <h2>Your current address is:</h2>
                         <h1>{this.state.address}</h1>

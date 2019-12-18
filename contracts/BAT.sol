@@ -8,6 +8,8 @@ contract BAT is ERC721 {
         string iban;
         string currencyCode;
         int currentBalance;
+        string name;
+        string surname;
     }
 
     uint lastTokenId;
@@ -73,21 +75,40 @@ contract BAT is ERC721 {
         return false;
     }
 
-    function createBankAccount(string memory _iban, string memory _currencyCode, int _balance) onlyIfIbanDoNotExist(_iban, msg.sender) public {
+    function createBankAccount(
+        string memory _iban,
+        string memory _currencyCode,
+        int _balance,
+        string memory _name,
+        string memory _surname) onlyIfIbanDoNotExist(_iban, msg.sender) public {
         lastTokenId += 1;
 
         accounts[lastTokenId].iban = _iban;
         accounts[lastTokenId].currencyCode = _currencyCode;
         accounts[lastTokenId].currentBalance = _balance;
+        accounts[lastTokenId].name = _name;
+        accounts[lastTokenId].surname = _surname;
 
         _mint(msg.sender, lastTokenId);
 
         emit bankAccountCreated(msg.sender, lastTokenId, accounts[lastTokenId].iban);
     }
 
-    function getBankAccount(uint _id) view public returns(string memory, string memory, int, uint, address) {
-        BankAccount memory acc = accounts[_id];
-        return(acc.iban, acc.currencyCode, acc.currentBalance, _id, ownerOf(_id));
+    function getBankAccount(uint _id) view public returns(string memory,
+        string memory,
+        int,
+        uint,
+        address,
+        string memory,
+        string memory) {
+        return(
+        accounts[_id].iban,
+        accounts[_id].currencyCode,
+        accounts[_id].currentBalance,
+        _id,
+        ownerOf(_id),
+        accounts[_id].name,
+        accounts[_id].surname);
     }
 
     function getCurrencyCode(uint _id) view public returns (string memory){
@@ -127,13 +148,11 @@ contract BAT is ERC721 {
     }
 
     function returnIdGivenIBAN (string memory _iban)view public returns (uint){
-        // if (checkIfTokenExistForGivenAddress(msg.sender)){
         for (uint i=1; i<=lastTokenId; i++){
             if (keccak256(abi.encodePacked((accounts[i].iban))) == keccak256(abi.encodePacked((_iban)))){
                 return i;
             }
         }
-        // }
         return 0;
     }
 

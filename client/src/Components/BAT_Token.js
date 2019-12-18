@@ -14,6 +14,8 @@ class BAT_Token extends React.Component {
               <img src={BAT_Token_Logo} className="imageToken"/>
               <div>
                   <p># {this.props.token}</p>
+                  <p>{this.props.name}</p>
+                  <p>{this.props.surname}</p>
                   <p>{this.props.addressOwner}</p>
                   <p>{this.props.iban}</p>
                   <h3>{balance} {this.props.currencyCode}</h3>
